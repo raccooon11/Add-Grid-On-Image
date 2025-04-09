@@ -1,6 +1,5 @@
 import tkinter as tk
 import customtkinter
-from customtkinter import CTkImage
 from pathlib import Path
 from grid_control import GridControl
 import cv2
@@ -24,8 +23,8 @@ class App(customtkinter.CTk):
     def setup_form(self):
         customtkinter.set_appearance_mode("dark")
         customtkinter.set_default_color_theme("blue")
-        self.minsize(1000, 650)
-        self.geometry("1000x650")
+        self.minsize(1000, 700)
+        self.geometry("1000x700")
         self.title("Add grid on Image")
 
         self.grid_rowconfigure(1, weight=1)
@@ -201,7 +200,7 @@ class ImageMainFrame(customtkinter.CTkFrame):
             pil_image = Image.fromarray(image_rgb)
         elif width:
             pil_image = Image.fromarray(image_rgb)
-        self.ctk_img = CTkImage(light_image=pil_image, dark_image=pil_image, size=pil_image.size)
+        self.ctk_img = customtkinter.CTkImage(light_image=pil_image, dark_image=pil_image, size=pil_image.size)
         self.image_label.configure(image=self.ctk_img)
         if pil_image.size[0] + 500 < 1500 and pil_image.size[1] + 230 < 1000:
             self.master.geometry(f"{pil_image.size[0] + 500}x{max((pil_image.size[1] + 200), 650)}")
@@ -489,4 +488,5 @@ class GridConfigFrame(customtkinter.CTkFrame):
 
 if __name__ == "__main__":
     app = App()
+    app.iconbitmap('icon.ico')
     app.mainloop()
