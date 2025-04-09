@@ -5,7 +5,7 @@
 これにより、デジタルイラストで模写する際ガイド線が必要な場合などに便利です。
 
 ## スクリーンショット
-![Image](https://github.com/user-attachments/assets/f44ece3e-0106-479e-9ecf-c53bc0217211)
+![Image](https://cdn.discordapp.com/attachments/1149904320221941763/1359487066710478940/image.png?ex=67f7a87e&is=67f656fe&hm=5fe9b16703c5d01ee7843a21e1a4330a0089c6db0553fe1cb942a42c43bb3aec&)
 
 ## 機能
 
