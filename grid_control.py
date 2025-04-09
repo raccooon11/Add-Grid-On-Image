@@ -44,8 +44,8 @@ class GridControl:
         image = cv2.cvtColor(self.np_image, cv2.COLOR_BGR2RGB)
         self.original_image = image.copy()
         self.height, self.width = image.shape[:2]
-        self.y_step = int(self.height/self.config["division_number"])
-        self.x_step = int(self.width/self.config["division_number"])
+        self.y_step = round(self.height/self.config["division_number"])
+        self.x_step = round(self.width/self.config["division_number"])
         overlay = image.copy()
         for y in range(self.y_step, self.height, self.y_step):
             if y + (self.y_step / 2) >= self.height:
