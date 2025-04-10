@@ -16,7 +16,7 @@
 
 ## ダウンロード
 
-[最新リリース](https://github.com/raccooon11/Add-Grid-On-Image/releases/latest)からAdd-On-Image.zipファイルをダウンロードします。
+[最新リリース](https://github.com/raccooon11/Add-Grid-On-Image/releases/latest)からAdd-Grid-On-Image.zipファイルをダウンロードします。
 ダウンロードしたzipファイルを任意のフォルダに解凍し、中にある`main.exe`を開きます。
 'WindowsによってPCが保護されました'と警告が出た場合は'詳細情報'をクリックして実行ボタンを押してください。
 
