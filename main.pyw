@@ -480,8 +480,6 @@ class GridConfigFrame(customtkinter.CTkFrame):
                     return False
             else:
                 return True
-        elif not self.is_user:
-            return True
         else:
             self.after_idle(lambda: self.height_textbox.configure(state="readonly"))
             return False
