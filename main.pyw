@@ -486,5 +486,5 @@ class GridConfigFrame(customtkinter.CTkFrame):
 
 if __name__ == "__main__":
     app = App()
-    app.iconbitmap('app_icon.ico')
+    app.iconbitmap('icon.ico')
     app.mainloop()
