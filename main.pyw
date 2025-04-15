@@ -176,18 +176,18 @@ class ImageMainFrame(customtkinter.CTkFrame):
         height = None
         width = None
         if max(image_height, image_width) == image_height:
-            calc = int(self.width / aspect_ratio)
+            calc = round(self.width / aspect_ratio)
             if min (calc, self.height) == self.height:
                 height = self.height
-                width = int(self.height * aspect_ratio)
+                width = round(self.height * aspect_ratio)
             else:
                 width = self.width
                 height = calc
         else:
-            calc = int(self.height * aspect_ratio)
+            calc = round(self.height * aspect_ratio)
             if min (calc, self.width) == self.width:
                 width = self.width
-                height = int(self.width / aspect_ratio)
+                height = round(self.width / aspect_ratio)
             else:
                 width = self.width
                 height = self.height
@@ -427,8 +427,8 @@ class GridConfigFrame(customtkinter.CTkFrame):
                             height = value = 1
                         self.aspect_ratio = int(value) / height
                         if float(self.aspect_ratio) <= 1500 or abs(int(value) - height) < 3000:
-                            if self.grid_config["size"] != (int(value), height):
-                                self.grid_config["size"] = (int(value), height)
+                            if self.grid_config["size"] != (round(value), height):
+                                self.grid_config["size"] = (round(value), height)
                             self.master.update(config=self.grid_config, aspect_ratio=self.aspect_ratio)
                     return True
                 else:
@@ -472,8 +472,8 @@ class GridConfigFrame(customtkinter.CTkFrame):
                             width = value = 1
                         self.aspect_ratio = width / int(value)
                         if float(self.aspect_ratio) >= 0.01 or abs(width - int(value) < 3000):
-                            if self.grid_config["size"] != (width, int(value)):
-                                self.grid_config["size"] = (width, int(value))
+                            if self.grid_config["size"] != (width, round(value)):
+                                self.grid_config["size"] = (width, round(value))
                             self.master.update(config=self.grid_config, aspect_ratio=self.aspect_ratio)
                     return True
                 else:
