@@ -68,10 +68,10 @@ class GridControl:
         self.temp_image = cv2.cvtColor(self.np_image.copy(), cv2.COLOR_BGR2RGB)
         if not self.done:
             if self.temp_image.shape[0] > 1000 or self.temp_image.shape[0] > 500:
-                height = int(self.width / self.temp_image.shape[1] * self.temp_image.shape[0])
+                height = round(self.width / self.temp_image.shape[1] * self.temp_image.shape[0])
                 self.temp_image = cv2.resize(self.temp_image, (self.width, height))
             if self.temp_image.shape[1] > 1000 or self.temp_image.shape[1] > 500:
-                width = int(self.height / self.temp_image.shape[0] * self.temp_image.shape[1])
+                width = round(self.height / self.temp_image.shape[0] * self.temp_image.shape[1])
                 self.temp_image = cv2.resize(self.temp_image, (width, self.height))
         while True:
             temp_image = self.temp_image.copy()
