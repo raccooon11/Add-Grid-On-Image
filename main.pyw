@@ -154,7 +154,7 @@ class ImageMainFrame(customtkinter.CTkFrame):
         self.grid_columnconfigure(1, weight=1)
 
         self.grid_edit_frame = GridConfigFrame(master=self, header_name="グリッドのカスタマイズ", grid_config=self.gridcontrol.config)
-        self.grid_edit_frame.grid(row=0, column=0, padx=20, pady=20, sticky="ns")
+        self.grid_edit_frame.grid(row=0, column=0, rowspan=2, padx=20, pady=20, sticky="ns")
 
         self.image_label = customtkinter.CTkLabel(self, text="")
         self.image_label.grid(row=0, column=1, padx=20, pady=20)
