@@ -8,7 +8,7 @@
 
 ## スクリーンショット
 
-![Image](https://github.com/user-attachments/assets/c6065d5e-59ea-46a1-a4d1-209f0d20c331)
+![Image](https://github.com/user-attachments/assets/c3c1367d-9816-4a6e-9915-acbed0075d8a)
 
 ## 機能
 
