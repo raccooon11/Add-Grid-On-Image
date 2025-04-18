@@ -1,7 +1,6 @@
 import tkinter as tk
 import customtkinter
 from CTkColorPicker import *
-from tkinterdnd2 import TkinterDnD, DND_FILES
 import cv2
 from PIL import ImageGrab, Image
 import numpy as np
