@@ -1,11 +1,13 @@
 import tkinter as tk
 import customtkinter
-from pathlib import Path
-from grid_control import GridControl
+from CTkColorPicker import *
+from tkinterdnd2 import TkinterDnD, DND_FILES
 import cv2
 from PIL import ImageGrab, Image
-from CTkColorPicker import *
 import numpy as np
+import os
+from pathlib import Path
+from grid_control import GridControl
 
 FONT_TYPE = "meiryo"
 
@@ -36,9 +38,15 @@ class App(customtkinter.CTk):
         self.image_main_frame = ImageMainFrame(master=self, header_name="画像表示")
         self.image_main_frame.grid(row=1, column=0, padx=20, pady=20, sticky="nsew")
 
+        self.bind_all("<Control-v>", self.read_file_frame.clipboard_button_callback)
+        self.bind_all("<Command-v>", self.read_file_frame.clipboard_button_callback)
+        self.bind_all("<Control-z>", self.image_main_frame.grid_edit_frame.undo_button_event)
+        self.bind_all("<Command-z>", self.image_main_frame.grid_edit_frame.undo_button_event)
+
     def on_path_selected(self, path, folder=False):
+        print(path)
         if not folder:
-            if isinstance(path, str):
+            if isinstance(path, str) and path:
                 self.filepath = path
             self.is_new_load = True
             self.image_main_frame.update(file=path)
@@ -89,12 +97,16 @@ class ReadFileFrame(customtkinter.CTkFrame):
             if self.on_path_selected:
                 self.on_path_selected(path=file_path)
 
-    def clipboard_button_callback(self):
+    def clipboard_button_callback(self, event=None):
         image = ImageGrab.grabclipboard()
         if isinstance(image, Image.Image):
             ReadFileFrame.change_textbox(self.read_path_textbox, "Clipboard")
             if self.on_path_selected:
                 self.on_path_selected(path=image)
+        elif isinstance(image, list) and image[0].endswith((".jpg", ".png")):
+            ReadFileFrame.change_textbox(self.read_path_textbox, image[0].replace("\\", "/"))
+            if self.on_path_selected:
+                self.on_path_selected(path=image[0])
 
     def dir_button_callback(self):
         folder_path = ReadFileFrame.dialog("folder")
@@ -148,8 +160,11 @@ class ImageMainFrame(customtkinter.CTkFrame):
         self.image_label = customtkinter.CTkLabel(self, text="")
         self.image_label.grid(row=0, column=1, padx=20, pady=20)
 
+        self.button_output = customtkinter.CTkButton(master=self, command=self.button_output_callback, text="保存先を開く", font=self.fonts)
+        self.button_output.grid(row=0, column=2, padx=10, pady=(10), sticky="s")
+
         self.button_save = customtkinter.CTkButton(master=self, command=self.button_save_callback, text="保存", font=self.fonts)
-        self.button_save.grid(row=0, column=2, padx=10, pady=20, sticky="s")
+        self.button_save.grid(row=1, column=2, padx=10, pady=(10, 20), sticky="s")
 
     def update(self, file=None, config=None, crop=False, undo=False, aspect_ratio=None):
         if self.master.is_new_load and self.grid_edit_frame.undo_button:
@@ -211,6 +226,9 @@ class ImageMainFrame(customtkinter.CTkFrame):
             tk.messagebox.showinfo("成功", f"ファイルに出力しました。")
         else:
             tk.messagebox.showerror("エラー", f"画像が開かれていません。")
+
+    def button_output_callback(self):
+        os.startfile(self.gridcontrol.config["output_dir"])
 
 class GridConfigFrame(customtkinter.CTkFrame):
 
@@ -353,7 +371,7 @@ class GridConfigFrame(customtkinter.CTkFrame):
             self.cropping_button.configure(state="normal")
             self.enable_all_widgets()
 
-    def undo_button_event(self):
+    def undo_button_event(self, event=None):
         if self.undo_button:
             self.master.update(undo=True)
             self.undo_button.destroy()
