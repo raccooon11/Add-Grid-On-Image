@@ -20,7 +20,8 @@ class GridControl:
         self.height = self.width = None
         self.x_step = self.y_step = None
 
-        self.height = self.width = 800
+        self.height = self.width = None
+        self.window_height = self.window_width = 800
         self.sx = self.sy = 0
         self.tx = self.ty = 0
         self.current_x = self.current_y = 0
@@ -66,13 +67,27 @@ class GridControl:
         cv2.namedWindow("Select Area")
         cv2.setMouseCallback("Select Area", self.draw_rectangle)
         self.temp_image = cv2.cvtColor(self.np_image.copy(), cv2.COLOR_BGR2RGB)
-        if not self.done:
-            if self.temp_image.shape[0] > 1000 or self.temp_image.shape[0] > 500:
-                height = round(self.width / self.temp_image.shape[1] * self.temp_image.shape[0])
-                self.temp_image = cv2.resize(self.temp_image, (self.width, height))
-            if self.temp_image.shape[1] > 1000 or self.temp_image.shape[1] > 500:
-                width = round(self.height / self.temp_image.shape[0] * self.temp_image.shape[1])
-                self.temp_image = cv2.resize(self.temp_image, (width, self.height))
+        image_height, image_width = self.temp_image.shape[:2]
+        aspect_ratio = image_width / image_height
+        height = None
+        width = None
+        if max(image_height, image_width) == image_height:
+            calc = round(self.window_width / aspect_ratio)
+            if min (calc, self.window_height) == self.window_height:
+                height = self.window_height
+                width = round(self.window_height * aspect_ratio)
+            else:
+                width = self.window_width
+                height = calc
+        else:
+            calc = round(self.window_height * aspect_ratio)
+            if min (calc, self.window_width) == self.window_width:
+                width = self.window_width
+                height = round(self.window_width / aspect_ratio)
+            else:
+                width = calc
+                height = self.window_height
+        self.temp_image = cv2.resize(self.temp_image.copy(), (width, height))
         while True:
             temp_image = self.temp_image.copy()
             if self.drawing:
