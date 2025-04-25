@@ -43,7 +43,6 @@ class App(customtkinter.CTk):
         self.bind_all("<Command-z>", self.image_main_frame.grid_edit_frame.undo_button_event)
 
     def on_path_selected(self, path, folder=False):
-        print(path)
         if not folder:
             if isinstance(path, str) and path:
                 self.filepath = path
@@ -203,7 +202,7 @@ class ImageMainFrame(customtkinter.CTkFrame):
                 width = self.width
                 height = round(self.width / aspect_ratio)
             else:
-                width = self.width
+                width = calc
                 height = self.height
         if width > 0 and height > 0:
             image = cv2.resize(image, (width, height), interpolation=cv2.INTER_AREA)
