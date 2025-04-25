@@ -4,6 +4,7 @@ from PIL import Image
 from pathlib import Path
 import datetime
 import json
+import os
 
 class GridControl:
 
@@ -159,8 +160,10 @@ class GridControl:
                     GridControl.imwrite(f'{file_path}_{width}x{height}_transparent.png', cv2.resize(transparent_image.copy(), (self.config["size"]), interpolation=cv2.INTER_LANCZOS4))
                 else:
                     GridControl.imwrite(f'{file_path}_{transparent_image.shape[1]}x{transparent_image.shape[0]}_transparent.png', transparent_image)
+            if self.config["auto_open"]:
+                os.startfile(Path(file_path).parent)
             with open("config.json", "w", encoding="utf-8") as f:
-                config = self.config
+                config = self.config.copy()
                 del config["size"]
                 json.dump(config, f, indent=4)
             return "success"
@@ -169,7 +172,7 @@ class GridControl:
 
     @staticmethod
     def read_config_file():
-        default = {"division_number":5, "line_width":5, "color":"0, 0, 255", "alpha":255, "transparent": True, "size":None, "output_dir":f'{(Path(__file__).resolve().parent).as_posix()}/output'}
+        default = {"division_number":5, "line_width":5, "color":"0, 0, 255", "alpha":255, "transparent": True, "size":None, "output_dir":f'{(Path(__file__).resolve().parent).as_posix()}/output', "auto_open":True}
         if Path("config.json").exists() and Path("config.json").is_file():
             with open("config.json", "r", encoding="utf-8") as f:
                 try:
