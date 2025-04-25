@@ -35,7 +35,7 @@ class App(customtkinter.CTk):
         self.read_file_frame.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
 
         self.image_main_frame = ImageMainFrame(master=self, header_name="画像表示")
-        self.image_main_frame.grid(row=1, column=0, padx=20, pady=20, sticky="nsew")
+        self.image_main_frame.grid(row=1, column=0, rowspan=3, padx=20, pady=20, sticky="nsew")
 
         self.bind_all("<Control-v>", self.read_file_frame.clipboard_button_callback)
         self.bind_all("<Command-v>", self.read_file_frame.clipboard_button_callback)
@@ -153,16 +153,21 @@ class ImageMainFrame(customtkinter.CTkFrame):
         self.grid_columnconfigure(1, weight=1)
 
         self.grid_edit_frame = GridConfigFrame(master=self, header_name="グリッドのカスタマイズ", grid_config=self.gridcontrol.config)
-        self.grid_edit_frame.grid(row=0, column=0, rowspan=2, padx=20, pady=20, sticky="ns")
+        self.grid_edit_frame.grid(row=0, column=0, rowspan=3, padx=20, pady=20, sticky="ns")
 
         self.image_label = customtkinter.CTkLabel(self, text="")
-        self.image_label.grid(row=0, column=1, padx=20, pady=20)
+        self.image_label.grid(row=0, column=1, rowspan=3,  padx=20, pady=20)
+
+        self.auto_open_checkbox = customtkinter.CTkCheckBox(master=self, text="保存時に出力先を開く", width=150, command=self.auto_open_checkbox_event)
+        self.auto_open_checkbox.grid(row=0, column=2, padx=10, pady=(10), sticky="s")
+        if self.gridcontrol.config["auto_open"]:
+            self.auto_open_checkbox.select()
 
         self.button_output = customtkinter.CTkButton(master=self, command=self.button_output_callback, text="保存先を開く", font=self.fonts)
-        self.button_output.grid(row=0, column=2, padx=10, pady=(10), sticky="s")
+        self.button_output.grid(row=1, column=2, padx=10, pady=(10), sticky="s")
 
         self.button_save = customtkinter.CTkButton(master=self, command=self.button_save_callback, text="保存", font=self.fonts)
-        self.button_save.grid(row=1, column=2, padx=10, pady=(10, 20), sticky="s")
+        self.button_save.grid(row=2, column=2, padx=10, pady=(10, 20), sticky="s")
 
     def update(self, file=None, config=None, crop=False, undo=False, aspect_ratio=None):
         if self.master.is_new_load and self.grid_edit_frame.undo_button:
@@ -226,7 +231,12 @@ class ImageMainFrame(customtkinter.CTkFrame):
             tk.messagebox.showerror("エラー", f"画像が開かれていません。")
 
     def button_output_callback(self):
+        if not (Path(self.gridcontrol.config["output_dir"]).exists() and not Path(self.gridcontrol.config["output_dir"]).is_file()):
+            Path(self.gridcontrol.config["output_dir"]).mkdir()
         os.startfile(self.gridcontrol.config["output_dir"])
+
+    def auto_open_checkbox_event(self):
+        self.gridcontrol.config["auto_open"] = bool(self.auto_open_checkbox.get())
 
 class GridConfigFrame(customtkinter.CTkFrame):
 
