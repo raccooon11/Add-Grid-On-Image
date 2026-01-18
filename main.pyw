@@ -1,6 +1,6 @@
 import tkinter as tk
 import customtkinter
-from CTkColorPicker import *
+from CTkColorPicker import AskColor
 import cv2
 from PIL import ImageGrab, Image
 import numpy as np
@@ -101,7 +101,7 @@ class ReadFileFrame(customtkinter.CTkFrame):
             ReadFileFrame.change_textbox(self.read_path_textbox, "Clipboard")
             if self.on_path_selected:
                 self.on_path_selected(path=image)
-        elif isinstance(image, list) and image[0].endswith((".jpg", ".png")):
+        elif isinstance(image, list) and image[0].endswith((".jpg", "jpeg", ".png")):
             ReadFileFrame.change_textbox(self.read_path_textbox, image[0].replace("\\", "/"))
             if self.on_path_selected:
                 self.on_path_selected(path=image[0])
